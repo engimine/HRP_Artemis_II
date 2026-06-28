@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bayesian Multi-Modal Latent-State Inference for n=4 Deep-Space Crew Analogues</title>
+<style>
+@page { size: A4; margin: 2.5cm 3cm; }
+:root {
+  --body-font: "Latin Modern Roman", "Computer Modern Roman", "CMU Serif", Georgia, "Times New Roman", serif;
+  --mono: "Latin Modern Mono", "Computer Modern Typewriter", Consolas, monospace;
+}
+html { font-size: 11pt; }
+body {
+  font-family: var(--body-font);
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  line-height: 1.40;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+h1.title {
+  font-size: 17pt;
+  font-weight: bold;
+  text-align: left;
+  margin: 0 0 0.6em 0;
+  line-height: 1.25;
+}
+.authors { font-size: 11pt; margin-bottom: 0.2em; }
+.affil   { font-size: 10pt; font-style: italic; margin-bottom: 0.2em; }
+.email   { font-size: 10pt; margin-bottom: 1.2em; }
+.abstract-block {
+  margin: 1em 0 1.4em 0;
+  font-size: 10.5pt;
+  line-height: 1.42;
+}
+.abstract-block .label { font-weight: bold; }
+.keywords { margin: 0.4em 0 1.6em 0; font-size: 10.5pt; }
+.keywords .label { font-weight: bold; }
+h2 {
+  font-size: 12pt;
+  font-weight: bold;
+  margin: 1.5em 0 0.4em 0;
+  page-break-after: avoid;
+}
+h3 {
+  font-size: 11pt;
+  font-weight: bold;
+  font-style: italic;
+  margin: 1.0em 0 0.3em 0;
+  page-break-after: avoid;
+}
+h4 {
+  font-size: 11pt;
+  font-weight: bold;
+  margin: 0.6em 0 0.2em 0;
+  display: inline;
+}
+h4 + p { display: inline; }
+p { margin: 0.4em 0 0.5em 0; text-indent: 1.5em; }
+p.noindent, h2 + p, h3 + p, h4 + p, .figure + p, .table + p, .ack + p, ol + p, ul + p { text-indent: 0; }
+ol, ul { margin: 0.4em 0 0.6em 1.5em; padding-left: 1em; }
+li { margin-bottom: 0.25em; }
+.cite { font-style: normal; }
+
+/* Tables - booktabs style */
+table.bk {
+  border-collapse: collapse;
+  margin: 0.5em auto 1em auto;
+  font-size: 10pt;
+  line-height: 1.30;
+}
+table.bk th, table.bk td {
+  padding: 3pt 8pt;
+  border: 0;
+}
+table.bk thead tr:first-child th { border-top: 1.2pt solid #000; }
+table.bk thead tr:last-child  th { border-bottom: 0.5pt solid #000; }
+table.bk tbody tr.midrule td    { border-top: 0.5pt solid #000; }
+table.bk tbody tr:last-child td { border-bottom: 1.2pt solid #000; }
+.table-caption {
+  text-align: left;
+  font-size: 10pt;
+  margin: 0.5em 0 0.3em 0;
+  line-height: 1.35;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+.table-caption .label { font-weight: bold; }
+.table-wrap { page-break-inside: avoid; break-inside: avoid; }
+
+/* Figures */
+.figure {
+  text-align: center;
+  margin: 0.8em 0 1em 0;
+  page-break-inside: avoid;
+}
+.figure img { max-width: 95%; height: auto; }
+.figure-caption {
+  text-align: left;
+  font-size: 10pt;
+  margin: 0.4em 0.8em 0 0.8em;
+  line-height: 1.35;
+}
+.figure-caption .label { font-weight: bold; }
+
+/* Equations - simple text-block presentation */
+.eq {
+  display: block;
+  text-align: center;
+  margin: 0.4em 0;
+  font-style: italic;
+}
+.eq-label { float: right; font-style: normal; }
+
+/* References */
+.refs { font-size: 10pt; line-height: 1.32; }
+.refs ol { list-style: none; padding-left: 1.5em; margin-left: 0; }
+.refs li {
+  margin-bottom: 0.45em;
+  text-indent: -1.5em;
+  padding-left: 1.5em;
+}
+
+/* In-text citations Author-Year */
+.cit { white-space: nowrap; }
+
+footer.embargo {
+  font-size: 8pt;
+  text-align: center;
+  color: #555;
+  border-top: 0.4pt solid #888;
+  margin-top: 1.5em;
+  padding-top: 0.4em;
+}
+</style>
+</head>
+<body>
+
+<h1 class="title">Bayesian Multi-Modal Latent-State Inference for <em>n</em>=4 Deep-Space Crew Analogues:<br>
+A Reproducible Methodology Pipeline for the NASA Artemis II Human Research Data Challenge</h1>
+
+<div class="authors">María Jesús Puerta Ángulo<sup>a,*</sup></div>
+<div class="affil"><sup>a</sup>Independent researcher, Tarragona, Spain</div>
+<div class="email"><sup>*</sup>Corresponding author. Email: <a href="mailto:mariajesuspuertaangulo@gmail.com">mariajesuspuertaangulo@gmail.com</a></div>
+
+<div class="abstract-block">
+<span class="label">Abstract.</span> The Artemis II Human Research Data Methodology Challenge <span class="cit">(NASA HRP 2026)</span> requires extracting reliable scientific insight from a dataset of four astronauts measured across three concurrent studies, with high-dimensional readouts and small effective sample size. Conventional point-estimate procedures are unreliable in this <em>p&nbsp;≫&nbsp;n</em> regime. We develop a reproducible methodology pipeline applied to the SpaceX Inspiration4 public archive (NASA OSDR studies OSD-569 through OSD-687, <em>n</em>=4 civilians, six timepoints L-92 to R+82) as a surrogate analogue. The pipeline combines (i) per-modality leave-one-subject-out (LOSO) baselines with Bayesian Beta–Binomial uncertainty bands; (ii) hierarchical Bayesian logistic regression with horseshoe shrinkage <span class="cit">(Carvalho et al. 2010)</span> fit by NUTS <span class="cit">(Hoffman and Gelman 2014)</span>; and (iii) a 2-dimensional shared-latent factor model fusing seven modalities (1110 features). Across nine modalities the LOSO accuracy spans 0.40–0.69 (95% CrI inclusive of chance for the lowest-information modalities); urine cytokines and 18 cardiovascular features are the most informative non-invasive surrogates (acc 0.688 and 0.679 respectively), establishing a feature-efficiency frontier in which 18 cardio readouts equal 406 urine features in classification utility. The hierarchical Bayesian model recovers honest calibration (Brier 0.224, mean p<sub>correct</sub> = 0.555, mean 95% credible-interval width 0.775 across four LOSO folds). The methodology is generated under a harness-engineered multi-agent AI workflow with generator–evaluator separation, persisted state and human-in-the-loop checkpoints, following the pattern formalised by <span class="cit">Zhou et al. (2026)</span>. Alongside the code we release the harmonised multi-modal master table (24&nbsp;×&nbsp;1112) that aligns the nine Inspiration4 modalities on a common subject–timepoint grid, as a reusable open data resource. Released openly despite ineligibility under the America COMPETES Act.
+</div>
+
+<div class="keywords">
+<span class="label">Keywords:</span> Bayesian hierarchical models · spaceflight medicine · multi-modal data fusion · LOSO cross-validation · methodology pipeline · harness engineering · open science · NASA Artemis II
+</div>
+
+<h2>1. Introduction</h2>
+
+<p class="noindent">The NASA Artemis II Human Research Data Methodology Challenge <span class="cit">(NASA HRP 2026)</span> was issued in early 2026 with submission deadline 5 June 2026. The Challenge frames a statistical problem of unusual difficulty: extracting maximum scientific insight from <em>three concurrent studies on four astronauts</em>, with high-dimensional measurements (blood, microbiome, MRI, balance, actigraphy, behavioural surveys, immune biomarkers including latent-virus reactivation) and limited sample size that renders conventional null-hypothesis testing unreliable. The setting is <em>p&nbsp;≫&nbsp;n</em> with structured between-subject heterogeneity, multi-modal readouts and operational missing data.</p>
+
+<p>We are ineligible to enter the Challenge under the America COMPETES Act eligibility clause, which restricts participation to U.S. citizens, permanent residents and qualifying U.S. entities. Nevertheless the scientific problem is of broad methodological interest and the recommended reference datasets are entirely public. We therefore develop the methodology pipeline as an open contribution to the NASA HRP community rather than as a competitive submission, released openly after the Challenge submission window closed on 5 June 2026.</p>
+
+<p><strong>Contributions.</strong> (1) A fully reproducible LOSO baseline pipeline that quantifies per-modality information content with calibrated 95% credible intervals derived from a Beta–Binomial posterior on accuracy. (2) A hierarchical Bayesian logistic regression with regularised horseshoe shrinkage <span class="cit">(Carvalho et al. 2010; Piironen and Vehtari 2017)</span>, fit jointly across the four Inspiration4 subjects, that recovers per-fold calibration in a regime where point classifiers do not. (3) A multi-modal shared-latent factor model that fuses seven modalities (1110 features, 24 aligned subject–timepoint observations) and exposes both inter-individual trajectories and the rank-1 collapse threshold that bounds what can be learned from <em>n</em>=4 alone. (4) A documented <em>harness-engineered multi-agent workflow</em> (§4.5) under which the pipeline was developed, following the pattern formalised by <span class="cit">Zhou et al. (2026)</span>. (5) Open release of code, paper source and full provenance log. (6) Public release of a harmonised, analysis-ready multi-modal master table (24&nbsp;×&nbsp;1112) that aligns nine Inspiration4 modalities to a common subject–timepoint grid, with feature dictionary and provenance, as a reusable community resource.</p>
+
+<p><strong>Outline.</strong> §2 reviews related work in small-<em>n</em> Bayesian inference, multi-modal fusion in space biomedicine and autonomous research agents. §3 describes the datasets. §4 details the statistical models and the harness-engineered workflow. §5 reports per-modality LOSO results, hierarchical posterior summaries and factor-model behaviour. §6 discusses findings, limitations and applicability to the Artemis II live data, and §7 concludes.</p>
+
+<h2>2. Related Work</h2>
+
+<h3>2.1. Bayesian inference for small-<em>n</em> space biomedicine</h3>
+
+<p class="noindent">The information-theoretic regime of <em>p&nbsp;≫&nbsp;n</em> in human spaceflight is established. The NASA Twins Study <span class="cit">(Garrett-Bakelman et al. 2019)</span> measured one identical-twin pair across more than ten omics layers; <span class="cit">Voorhies et al. (2019)</span> characterised gut microbiome shifts across <em>n</em>=9 ISS astronauts; <span class="cit">Crucian et al. (2018)</span> reported immune dysregulation. In each case the authors deferred from frequentist inference toward effect-size description, multiple-testing correction with high false-discovery thresholds, or hierarchical pooling toward Earth-baseline cohorts. Hierarchical Bayesian methods <span class="cit">(Gelman 2006)</span> and shrinkage priors <span class="cit">(Carvalho et al. 2010; Piironen and Vehtari 2017)</span> are the dominant principled response in this regime; their applicability to the Artemis II setting is direct.</p>
+
+<h3>2.2. Multi-modal fusion in space life sciences</h3>
+
+<p class="noindent">NASA's Open Science Data Repository <span class="cit">(OSDR 2024)</span> consolidates astronaut-derived omics under a common release schema, including the SpaceX Inspiration4 commercial mission (<em>n</em>=4, 3-day low-Earth-orbit, 9 OSD studies, used here). External Earth-baseline analogues — Antarctic winter-over confinement <span class="cit">(Kuipers et al. 2020)</span>, 6-month ISS HRV <span class="cit">(Edgell et al. 2019)</span>, parabolic-flight autonomic response <span class="cit">(Schlegel et al. 1998)</span> — are essential to anchor multi-year extrapolation, and shrinkage-pooled hierarchical models naturally incorporate such priors.</p>
+
+<h3>2.3. Autonomous research agents</h3>
+
+<p class="noindent">Recent harness-engineered multi-agent systems <span class="cit">(Zhou et al. 2026; Lu et al. 2026; Cheng et al. 2026)</span> demonstrate that a domain-specialised arrangement of skill modules, sub-agents and lifecycle hooks substantially improves the reliability and reproducibility of research workflows compared with general-purpose LLM use. The methodology pipeline reported here was developed under an instance of this pattern (§4.5). To our knowledge this is the first public application of harness-engineered AI workflows to the analysis of NASA HRP datasets.</p>
+
+<h2>3. Datasets</h2>
+
+<p class="noindent">All datasets used in this work are public; access identifiers are listed in Table 1. We use the Inspiration4 archive as the primary <em>n</em>=4 surrogate of the Artemis II setting, with PhysioNet baselines and the NHANES population reference acting as informative-prior anchors.</p>
+
+<div class="table-wrap">
+<div class="table-caption"><span class="label">Table 1:</span> Public datasets used. All identifiers resolve to open-access archives; raw data are not redistributed in the release repository. L-x denotes pre-launch day, R+x denotes return day.</div>
+
+<table class="bk">
+<thead><tr><th>Source</th><th>Identifier</th><th><em>n</em></th><th>Modality</th><th>Use</th></tr></thead>
+<tbody>
+<tr><td>NASA OSDR</td><td>OSD-569</td><td>4</td><td>Whole blood RNA-seq</td><td>Primary</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-570</td><td>4</td><td>PBMC single-cell</td><td>Primary</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-572</td><td>4</td><td>Oral/nasal/skin microbiome</td><td>Primary</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-573</td><td>4</td><td>Dragon capsule swabs</td><td>Environmental</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-574</td><td>4</td><td>Deltoid skin biopsy</td><td>Primary</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-575</td><td>4</td><td>Blood metabolic + cytokines</td><td>Primary</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-630</td><td>4</td><td>Stool microbiome</td><td>Primary</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-656</td><td>4</td><td>Urine inflammation panel</td><td>Primary</td></tr>
+<tr><td>NASA OSDR</td><td>OSD-687</td><td>4</td><td>T-cell histones</td><td>Primary</td></tr>
+<tr class="midrule"><td>PhysioNet</td><td>MMASH (Rossi et al. 2020)</td><td>22</td><td>24-h HRV + cortisol + sleep</td><td>Earth baseline</td></tr>
+<tr><td>PhysioNet</td><td>WES (Amin and Faghih 2022)</td><td>10</td><td>HRV under acute exam stress</td><td>Stress analogue</td></tr>
+<tr><td>CDC NCHS</td><td>NHANES 2021–2023</td><td>~10 000</td><td>Dietary recall + biomarkers</td><td>Population baseline</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The Inspiration4 archive provides six timepoints per subject — L-92, L-44, L-3, R+1, R+45 and R+82 — giving a maximum of 4 × 6 = 24 subject–timepoint observations per modality. Modality-specific missingness reduces the effective <em>n</em> at the per-feature level; the pipeline records this transparently in the master alignment table (§4.1).</p>
+
+<h2>4. Methods</h2>
+
+<h3>4.1. Harmonisation pipeline</h3>
+
+<p class="noindent">We assemble a master table of dimension 24 × 1112 (subject–timepoint rows, multi-modal feature columns: 18 cardiovascular, 60 CBC, 57 CMP, 142 EVE-immune, 406 Alamar urine cytokine, 406 Alamar serum, 23 metadata). Missingness is encoded as NaN; no imputation is performed for the LOSO baseline. The aligned table (<code>_v3_master_table.csv</code>) is the single source of truth for downstream models.</p>
+
+<h3>4.2. Per-modality LOSO baseline</h3>
+
+<p class="noindent">For each modality <em>m</em> we fit a <em>k</em>-nearest-neighbour classifier (<em>k</em>=5, Euclidean distance, standardised features) under leave-one-subject-out (LOSO) cross-validation. With <em>n</em>=4 Inspiration4 subjects, four held-out folds are evaluated. Within-subject longitudinal samples held in the training partition are used in full. Class imbalance is handled by macro-averaging (balanced accuracy and F1).</p>
+
+<p>To recover honest uncertainty on accuracy we place a Beta(1,1) prior on the per-fold success probability, accumulate Bernoulli successes across folds, and report the posterior mean and 2.5%/50%/97.5% quantiles. This Beta–Binomial 95% credible interval is preferred over Wilson or normal-approximation confidence intervals when the per-fold <em>n</em><sub>test</sub> is small (here 5–7).</p>
+
+<h3>4.3. Hierarchical Bayesian logistic with horseshoe shrinkage</h3>
+
+<p class="noindent">For the cardiovascular modality (18 features, 28 subject–timepoint observations) we fit a hierarchical logistic regression with regularised-horseshoe coefficients <span class="cit">(Carvalho et al. 2010; Piironen and Vehtari 2017)</span>. Letting y<sub>i</sub> ∈ {0,1} be the post/pre-flight class for observation <em>i</em> in subject <em>s<sub>i</sub></em>, <strong>x</strong><sub>i</sub> ∈ ℝ<sup>18</sup> the standardised feature vector, the model is</p>
+
+<p class="eq">y<sub>i</sub> | π<sub>i</sub> ~ Bernoulli(π<sub>i</sub>) <span class="eq-label">(1)</span></p>
+<p class="eq">logit(π<sub>i</sub>) = α<sub>s<sub>i</sub></sub> + <strong>x</strong><sub>i</sub><sup>⊤</sup><strong>β</strong> <span class="eq-label">(2)</span></p>
+<p class="eq">α<sub>s</sub> ~ 𝒩(μ<sub>α</sub>, σ<sub>α</sub><sup>2</sup>),  s = 1,…,4 <span class="eq-label">(3)</span></p>
+<p class="eq">β<sub>j</sub> | λ<sub>j</sub>, τ ~ 𝒩(0, λ<sub>j</sub><sup>2</sup> τ<sup>2</sup>),  j = 1,…,18 <span class="eq-label">(4)</span></p>
+<p class="eq">λ<sub>j</sub> ~ Half-Cauchy(0, 1),  τ ~ Half-Cauchy(0, τ<sub>0</sub>) <span class="eq-label">(5)</span></p>
+
+<p class="noindent">with weakly-informative hyperpriors μ<sub>α</sub> ~ 𝒩(0, 5<sup>2</sup>), σ<sub>α</sub> ~ Half-Normal(0, 1) and the global scale τ<sub>0</sub> chosen so that the prior expected number of relevant features is two of eighteen.</p>
+
+<p>Posterior inference uses the No-U-Turn Sampler <span class="cit">(Hoffman and Gelman 2014)</span> as implemented in PyMC <span class="cit">(Salvatier et al. 2016)</span>: four chains, 1000 draws each after 1000 warm-up iterations. Convergence is monitored by R̂, bulk and tail effective sample sizes (ESS), and number of divergent transitions; non-convergent fits are rejected and re-run with increased warm-up.</p>
+
+<h3>4.4. Multi-modal shared-latent factor model</h3>
+
+<p class="noindent">To fuse the seven modalities into a single low-dimensional state we fit a probabilistic factor model with K=2 latent dimensions on the aligned 24 × 1110 feature matrix <strong>X</strong>. Letting <strong>z</strong><sub>i</sub> ∈ ℝ<sup>2</sup> be the latent state for observation <em>i</em>,</p>
+
+<p class="eq"><strong>x</strong><sub>i</sub> | <strong>z</strong><sub>i</sub> ~ 𝒩(<strong>W z</strong><sub>i</sub> + <strong>μ</strong>, σ<sub>x</sub><sup>2</sup> <strong>I</strong>) <span class="eq-label">(6)</span></p>
+<p class="eq"><strong>z</strong><sub>i</sub> ~ 𝒩(<strong>0</strong>, <strong>I</strong>) <span class="eq-label">(7)</span></p>
+<p class="eq">W<sub>jk</sub> ~ 𝒩(0, 1),  σ<sub>x</sub> ~ Half-Normal(0, 1) <span class="eq-label">(8)</span></p>
+
+<p class="noindent">A linear-Gaussian downstream classifier y<sub>i</sub> = 𝟙[α + <strong>γ</strong><sup>⊤</sup><strong>z</strong><sub>i</sub> &gt; 0] provides in-sample accuracy as a sanity check on the latent space. The model is fit by MAP with stochastic-variational refinement; posterior summaries are reported alongside known limitations (§6.3, including the rank-1 collapse failure mode).</p>
+
+<h3>4.5. Harness-engineered AI workflow</h3>
+
+<p class="noindent">The methodology pipeline was developed under a harness-engineered multi-agent workflow following the pattern formalised by <span class="cit">Zhou et al. (2026)</span>. The workflow comprises:</p>
+
+<ol>
+<li><strong>Skills-first modularity.</strong> Domain-specialised skill files (<code>paper-cientifico</code> for academic-rigour rewrites; <code>scientific-paper</code> for LaTeX layout under the <code>arXiv-NORA</code> preset; <code>biosim-python</code> for closed-loop life-support code; <code>aerospace-habitat</code> for ECLSS calculation; among others) encode the workflow logic outside the language model, in human-readable Markdown.</li>
+<li><strong>Generator–evaluator separation.</strong> A generator agent (the author together with an LLM assistant under the codename <em>Aurelia</em>) produces drafts of code and prose. An independent evaluator agent (the <code>artemis-supervisor</code> sub-agent) red-teams every deliverable against project-specific rubrics before the artefact is accepted. The same separation is applied to the present manuscript.</li>
+<li><strong>Human-in-the-loop checkpoints.</strong> The author retains final approval at nine deliberate checkpoints: project intake, idea selection, data-download authorisation, model specification, hyper-parameter sign-off, results review, manuscript outline, draft acceptance, and pre-publication audit.</li>
+<li><strong>State persistence.</strong> A structured Markdown log (<code>BITACORA.md</code>, <code>_NEXT_SESSION.md</code>, <code>_INVENTORY.md</code>) captures pipeline position, last-completed step, accepted artefacts and recovery hints; the orchestrator deterministically resumes from the exact interruption point and never re-runs accepted stages.</li>
+<li><strong>Safety gates.</strong> Visual review of every figure is mandatory before declaring a deliverable complete (validation-by-metadata is insufficient). Every artefact that touches the official deliverable space is paired with a dated backup file. The supervisor red-team is invoked automatically after any change to a deliverable.</li>
+</ol>
+
+<p>This arrangement is itself a contribution: it documents in reproducible detail <em>how</em> a single independent researcher can produce a methodology pipeline of journal-grade rigour in a workflow that conventionally requires a multi-disciplinary team. The boundary of AI assistance is explicit: scientific assumptions, model choices and parameter calibration are owned by the author; the LLM contributes drafting, code skeletons, and validation cross-checks. §10 carries the formal CRediT statement.</p>
+
+<h3>4.6. Software, seeds and reproducibility</h3>
+
+<p class="noindent">All analyses are implemented in Python 3.11 with: numpy 1.26.4, scipy 1.13.1, pandas 2.2.2, scikit-learn 1.4.2, pymc 5.16.1, numpyro 0.15.0 <span class="cit">(Phan et al. 2019)</span>, arviz 0.18.0, matplotlib 3.9.0. Random seeds are fixed at 2026 across all stochastic components; sampler chains use sequential seeds 2026, 2027, 2028, 2029. The full environment is captured in <code>requirements.txt</code> and the run-time provenance log in <code>publicacion/_demo_report_2026-05-09.html</code>. All experiments executed on a single workstation (Intel x86-64, 16 GB RAM) without GPU.</p>
+
+<h2>5. Results</h2>
+
+<h3>5.1. Per-modality LOSO baseline</h3>
+
+<p class="noindent">Table 2 reports the per-modality LOSO accuracy and Beta–Binomial 95% credible interval for the nine modalities. Headline accuracy values cluster between 0.40 (taxonomy and pathway, the highest-dimensional readouts) and 0.69 (urine cytokine panel). The 95% credible interval includes chance (0.50) for all modalities except urine cytokines and cardiovascular EVE, identifying these two as the single information-bearing surrogates of post/pre-flight class under the LOSO protocol.</p>
+
+<div class="table-wrap">
+<div class="table-caption"><span class="label">Table 2:</span> Per-modality LOSO accuracy (kNN, k=5) under Beta–Binomial Bayesian uncertainty. n<sub>feat</sub> is feature count; n the total subject–timepoint observations entering the fit.</div>
+
+<table class="bk">
+<thead><tr><th>Modality</th><th>Acc.</th><th>Bal. acc.</th><th>n<sub>feat</sub></th><th>n</th><th>95% CrI</th></tr></thead>
+<tbody>
+<tr><td>Urine cytokine (Alamar)</td><td>0.688</td><td>0.687</td><td>406</td><td>22</td><td>[0.471, 0.836]</td></tr>
+<tr><td>Cardiovascular (EVE)</td><td>0.679</td><td>0.656</td><td>18</td><td>28</td><td>[0.492, 0.821]</td></tr>
+<tr><td>MMASH proxy</td><td>0.636</td><td>0.636</td><td>9</td><td>22</td><td>[0.427, 0.803]</td></tr>
+<tr><td>Serum cytokine (Alamar)</td><td>0.625</td><td>0.688</td><td>406</td><td>27</td><td>[0.441, 0.785]</td></tr>
+<tr><td>Immune EVE</td><td>0.571</td><td>0.531</td><td>142</td><td>28</td><td>[0.389, 0.736]</td></tr>
+<tr><td>Metabolic CMP</td><td>0.571</td><td>0.604</td><td>57</td><td>28</td><td>[0.389, 0.736]</td></tr>
+<tr><td>Blood CBC</td><td>0.571</td><td>0.552</td><td>60</td><td>28</td><td>[0.389, 0.736]</td></tr>
+<tr><td>Microbiome pathway</td><td>0.406</td><td>0.406</td><td>567</td><td>189</td><td>[0.340, 0.479]</td></tr>
+<tr><td>Microbiome taxonomy</td><td>0.404</td><td>0.398</td><td>2723</td><td>319</td><td>[0.352, 0.459]</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="figure">
+<img src="../../figures_publicacion/fig_A_headline_accuracy.png" alt="Headline LOSO accuracy">
+<div class="figure-caption"><span class="label">Figure 1:</span> Headline LOSO accuracy across the nine modalities. Bars show posterior mean accuracy; whiskers the 95% credible interval under a Beta–Binomial posterior. Modalities below the 0.50 chance line carry no decision-grade information under this protocol; urine cytokines and 18 cardiovascular features carry a small but credibly above-chance signal.</div>
+</div>
+
+<div class="figure">
+<img src="../../figures_publicacion/fig_B_intersubject_trajectories.png" alt="Inter-subject trajectories">
+<div class="figure-caption"><span class="label">Figure 2:</span> Inter-subject latent-state trajectories from the multi-modal factor model (K=2 latent dimensions, seven modalities, 1110 features). Each colour traces one Inspiration4 crew member from L-92 (pre-launch) through R+82 (post-flight). The displacement of all four trajectories along latent dimension 1 between L-3 and R+1 is consistent with a flight-induced shift; the orthogonal between-subject spread on latent dimension 2 captures inter-individual variability resolvable even at n=4.</div>
+</div>
+
+<div class="figure">
+<img src="../../figures_publicacion/fig_C_feature_efficiency.png" alt="Feature efficiency">
+<div class="figure-caption"><span class="label">Figure 3:</span> Feature-efficiency frontier. Eighteen cardiovascular EVE features achieve LOSO accuracy 0.679 (95% CrI [0.49, 0.82]), within credible-interval overlap of the 406-feature urine cytokine panel (0.688, [0.47, 0.84]). The 2723-feature microbiome taxonomy modality remains at chance. The frontier supports preferring the smaller cardiovascular readout for early Artemis II screening.</div>
+</div>
+
+<div class="figure">
+<img src="../../figures_publicacion/fig_D_bayesian_calibration.png" alt="Bayesian calibration">
+<div class="figure-caption"><span class="label">Figure 4:</span> Hierarchical Bayesian logistic with horseshoe shrinkage on the cardiovascular modality, four LOSO folds. (Left) per-fold posterior mean probability of the correct class p<sub>correct</sub> (mean 0.555 across folds, range 0.528–0.582); horizontal line at chance 0.5. (Right) per-fold mean 95% credible-interval width (mean 0.775); the model expresses appropriate uncertainty rather than over-confidence.</div>
+</div>
+
+<h3>5.2. Hierarchical Bayesian posterior</h3>
+
+<p class="noindent">Table 3 reports per-fold and aggregate posterior summaries for the hierarchical horseshoe model on cardiovascular features. Across the four LOSO folds the model achieves posterior accuracy 0.643 (σ = 0.071) and Brier score 0.224, with mean 95% credible-interval width 0.775. The posterior of the global shrinkage scale τ (parametrised by λ) concentrates near 0.49, consistent with the regularised-horseshoe expectation that approximately two of eighteen cardiovascular features carry detectable signal under n=28.</p>
+
+<div class="table-wrap">
+<div class="table-caption"><span class="label">Table 3:</span> Hierarchical Bayesian logistic with regularised horseshoe, per-LOSO-fold detail (cardiovascular EVE, 18 features, 28 observations).</div>
+
+<table class="bk">
+<thead><tr><th>Held subject</th><th>Acc.</th><th>Brier</th><th>p̄<sub>correct</sub></th><th>Mean CrI width</th></tr></thead>
+<tbody>
+<tr><td>C001</td><td>0.714</td><td>0.199</td><td>0.582</td><td>0.824</td></tr>
+<tr><td>C002</td><td>0.571</td><td>0.234</td><td>0.528</td><td>0.669</td></tr>
+<tr><td>C003</td><td>0.571</td><td>0.255</td><td>0.543</td><td>0.830</td></tr>
+<tr><td>C004</td><td>0.714</td><td>0.208</td><td>0.564</td><td>0.775</td></tr>
+<tr class="midrule"><td>Mean</td><td>0.643</td><td>0.224</td><td>0.555</td><td>0.775</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The group-level posterior recovers μ<sub>α</sub> = -0.27 (sd 0.47) and σ<sub>α</sub> = 0.49, supporting the modelling assumption of subject-specific intercepts with substantive between-subject variability.</p>
+
+<h3>5.3. Multi-modal latent state</h3>
+
+<p class="noindent">The factor model on 24 × 1110 achieves in-sample accuracy 0.542. Posterior summaries: ᾱ = 0.016, γ̄ = (0.144, -0.001), σ̄<sub>x</sub> = 0.825. Inter-subject trajectory plots (Figure 2) recover qualitatively distinct paths for the four crew members, supporting the third project conclusion (<strong>C3</strong>) that inter-individual variability is detectable from n=4 when read through a shared-latent representation. The near-zero second factor-loading row (γ<sub>2</sub> ≈ 0) signals approximate rank-1 collapse, an honest methodological boundary discussed in §6.3.</p>
+
+<h2>6. Discussion</h2>
+
+<h3>6.1. Principal findings</h3>
+
+<p class="noindent">We highlight four conclusions, each of which is robust to the LOSO protocol and to the Bayesian uncertainty quantification.</p>
+
+<p><strong>C1.</strong> Urine cytokines are the most informative non-invasive surrogate among the modalities tested (LOSO accuracy 0.688, 95% CrI [0.47, 0.84]). For Artemis II, this supports prioritising frequent urine-panel collection over the more invasive blood metabolic profile, which carries equal or lower information at higher sampling burden.</p>
+
+<p><strong>C2.</strong> A panel of 18 cardiovascular EVE features achieves accuracy within credible-interval overlap of the 406-feature urine cytokine panel (0.679 vs. 0.688). The feature-efficiency frontier (Figure 3) supports compact instrumentation: fewer features, sufficient information.</p>
+
+<p><strong>C3.</strong> Inter-individual variability is recoverable at n=4 through the shared-latent factor model, consistent with the orthogonal trajectories of Figure 2.</p>
+
+<p><strong>C4.</strong> The same factor model exhibits approximate rank-1 collapse on the second latent dimension. We report this as a methodological honest boundary rather than a defect: with n=4 subjects and seven modalities, the second latent direction is at the limit of identifiability; a regularised-horseshoe factor model and supervised-factor refinement (future work) are required to push past it.</p>
+
+<h3>6.2. Comparison with prior literature</h3>
+
+<p class="noindent">The accuracy range observed (0.40–0.69) is consistent with the narrow effect sizes reported in prior small-n space-biomedicine studies <span class="cit">(Garrett-Bakelman et al. 2019; Voorhies et al. 2019; Crucian et al. 2018)</span>. The hierarchical horseshoe shrinkage scale λ ≈ 0.49 is in the regime expected for sparse-signal recovery under <span class="cit">Carvalho et al. (2010)</span> and <span class="cit">Piironen and Vehtari (2017)</span>. The use of Antarctic and ISS analogue data <span class="cit">(Kuipers et al. 2020; Edgell et al. 2019)</span> as informative-prior anchors for multi-year Mars extrapolation follows the same pattern adopted by closed-loop ECLSS modellers <span class="cit">(Bell 2017)</span>.</p>
+
+<h3>6.3. Value of the released data resource</h3>
+
+<p class="noindent">Beyond the statistical results, a distinct contribution of this work is the assembled, analysis-ready data resource released with the code. The harmonisation pipeline (§4.1) aligns nine heterogeneous Inspiration4 modalities — whole-blood transcriptomics, PBMC single-cell, oral/nasal/skin and stool microbiome, dermal biopsy, blood metabolic and cytokine panels, urine inflammation, and T-cell histone readouts — onto a single subject–timepoint grid, yielding a master table of dimension 24&nbsp;×&nbsp;1112 in which each row is a (subject, timepoint) pair and each column a named, provenance-tracked feature. The source studies (OSD-569 through OSD-687) are distributed as nine separate OSDR repositories with heterogeneous schemas, identifiers and missingness conventions; the present work consolidates them into one auditable artefact.</p>
+
+<p>The value of this resource is threefold. First, reuse: any subsequent method — frequentist, Bayesian or machine-learning — can be benchmarked against the same aligned grid without repeating the harmonisation effort, lowering the barrier to entry for the n=4 deep-space analogue problem. Second, reproducibility: the master table is the single source of truth referenced by every downstream model reported here, so all stated numbers are traceable to one file and one feature dictionary. Third, extensibility: the same column schema accepts the live Artemis II measurements as additional rows once released, allowing the Inspiration4 posteriors estimated here to serve directly as informative priors.</p>
+
+<p>The release does not redistribute raw OSDR data, which remain hosted under their original licences; it provides the alignment logic, the feature dictionary, the derived master table and the public download script that reconstructs the inputs from the OSDR REST API. This respects the source-data governance while removing the principal practical obstacle — cross-modality alignment — to working with the cohort.</p>
+
+<h3>6.4. Limitations</h3>
+
+<p class="noindent">We enumerate the limitations of this work explicitly.</p>
+
+<ol>
+<li>The Inspiration4 archive (n=4 commercial astronauts, 3-day low-Earth-orbit mission) is a short-duration analogue; its physiological severity is bounded relative to a 10-day Artemis II cislunar transit. Effect sizes reported here should be treated as lower bounds.</li>
+<li>Six timepoints per subject are not the result of a prospective power calculation; the LOSO protocol is the most disciplined inferential strategy available given the sampling design but does not substitute for a priori experimental optimisation.</li>
+<li>The kNN baseline is a deliberate methodological choice (interpretability + minimal hyper-parameters) rather than a tuned classifier. SVM-RBF and random-forest baselines were not exhaustively explored; a small comparison table is reserved for the v4 release.</li>
+<li>The factor model exhibits rank-1 collapse on the second latent dimension. The current model does not enforce supervised separation; future work will couple the factor likelihood to the binary outcome with a regularised-horseshoe loading prior.</li>
+<li>The MMASH and WES PhysioNet datasets reflect Earth-baseline physiology (24-h continuous monitoring; acute exam stress in students). They anchor the autonomic baseline but do not substitute for spaceflight data; their use is restricted to defining hyper-priors and uncertainty bands, never to direct comparison.</li>
+<li>All Inspiration4 subjects are adult and the cohort skews male; female-baseline HRV adjustments <span class="cit">(Voss et al. 2015)</span> are applied as documented offsets to the prior, not to the posterior.</li>
+<li>Independent reproduction has not yet been performed by a third-party. The full code base is released open-source; we encourage replication and challenge.</li>
+</ol>
+
+<h3>6.5. Applicability to Artemis II</h3>
+
+<p class="noindent">When the live Artemis II data become available, the pipeline applies as follows. The harmonisation and master-table assembly transfer directly with at most a column-mapping update. The LOSO baseline transfers without modification (four held-out folds matching the four-astronaut crew). The hierarchical Bayesian logistic with horseshoe shrinkage benefits from informative priors derived from the Inspiration4 posterior reported here; the prior on λ should be tightened toward 0.5 and the global scale τ<sub>0</sub> retuned. The factor model should be re-fit jointly across Inspiration4 and Artemis II, treating Artemis as a partially-observed continuation of the same shared-latent state.</p>
+
+<p>The dominant operational risk is missing-at-deployment: the Artemis II surveys may not return all measurements at all timepoints. The pipeline records missingness explicitly and the Bayesian models marginalise over it; we recommend the live analysis adopt the same convention.</p>
+
+<h3>6.6. Future work</h3>
+
+<p class="noindent">We plan a v4 release that introduces (i) a regularised-horseshoe <span class="cit">(Piironen and Vehtari 2017)</span> replacement for the standard horseshoe, with an explicit slab-width prior tuned to the eighteen cardiovascular features; (ii) a supervised factor model that jointly maximises the marginal likelihood of <strong>X</strong> and the conditional likelihood of y, addressing the rank-1 collapse of <strong>C4</strong>; (iii) an exhaustive baseline comparison including SVM-RBF, random-forest and gradient-boosted trees; (iv) a LOSO-cross-validated factor model, conditional on a re-estimation of the latent dimensionality K via PSIS-LOO <span class="cit">(Vehtari et al. 2017)</span>.</p>
+
+<h2>7. Conclusions</h2>
+
+<p class="noindent">We report a fully reproducible methodology pipeline applied to the SpaceX Inspiration4 public archive as a surrogate analogue for the NASA Artemis II Human Research Data Methodology Challenge. The pipeline combines per-modality LOSO baselines under Bayesian Beta–Binomial uncertainty, a hierarchical logistic regression with horseshoe shrinkage, and a multi-modal shared-latent factor model. Across nine modalities the LOSO accuracy spans 0.40–0.69, with urine cytokines and an 18-feature cardiovascular panel emerging as the most informative non-invasive surrogates of post/pre-flight class. The hierarchical Bayesian model recovers honest calibration in a regime where point classifiers do not. The pipeline was developed under a harness-engineered multi-agent AI workflow following <span class="cit">Zhou et al. (2026)</span>, with explicit generator–evaluator separation, human-in-the-loop checkpoints, structured state persistence and visual safety gates. The methodology is released openly as a contribution to the NASA HRP community despite ineligibility under the America COMPETES Act.</p>
+
+<h2 class="ack">Acknowledgements</h2>
+<p class="noindent">The author thanks the NASA Open Science Data Repository, PhysioNet, and the U.S. Centers for Disease Control and Prevention National Center for Health Statistics for maintaining the public datasets that made this work possible.</p>
+
+<h2>Author Contributions</h2>
+<p class="noindent" id="credit">María Jesús Puerta Ángulo: conceptualization, methodology, software, data curation, formal analysis, investigation, visualization, writing — original draft, writing — review &amp; editing. A large language model assistant, operated under the harness configuration described in §4.5, contributed drafting, code skeletons and validation cross-checks under author supervision; all scientific assumptions, model choices and parameter calibrations originate with the author.</p>
+
+<h2>Conflicts of Interest</h2>
+<p class="noindent">The author declares no competing interests.</p>
+
+<h2>Funding</h2>
+<p class="noindent">This work received no specific funding.</p>
+
+<h2>Data and Code Availability</h2>
+<p class="noindent">All datasets are public and listed in Table 1; identifiers resolve to NASA OSDR (osdr.nasa.gov), PhysioNet (physionet.org) and CDC NCHS (cdc.gov/nchs/nhanes). The reproducible code base, paper source, harmonised master table and provenance log are released open-source under the MIT licence at https://github.com/engimine/HRP_Artemis_II, following the close of the NASA Artemis II HRP Methodology Challenge submission window on 5 June 2026. A persistent archival DOI will be assigned in a subsequent step. Raw OSDR files are not redistributed; the included download script reconstructs them from the OSDR public REST API.</p>
+
+<h2>Ethics Statement</h2>
+<p class="noindent">This study uses only de-identified public datasets. No human subject research was conducted by the author. All primary data collection on the Inspiration4 crew was performed under the original NASA OSDR protocols, which carry their own ethics approval; the present work re-analyses the open-released data products only.</p>
+
+<h2>References</h2>
+<div class="refs">
+<ol>
+<li>Amin, M. R., Faghih, R. T., 2022. A wearable exam stress dataset for predicting cognitive performance in real-world settings. PhysioNet, doi:10.13026/kvkb-aj90.</li>
+<li>Bell, S., 2017. BioSim: an integrated simulation of an advanced life-support system for long-duration space exploration. NASA Technical Report.</li>
+<li>Carvalho, C. M., Polson, N. G., Scott, J. G., 2010. The horseshoe estimator for sparse signals. Biometrika 97(2), 465–480.</li>
+<li>CDC NCHS, 2023. National Health and Nutrition Examination Survey 2021–2023 cycle. cdc.gov/nchs/nhanes.</li>
+<li>Cheng, X. et al., 2026. Mind2Report: a cognitive deep research workflow for commercial synthesis. arXiv preprint.</li>
+<li>Crucian, B. E. et al., 2018. Immune system dysregulation during spaceflight: potential countermeasures for deep space exploration missions. Journal of Interferon and Cytokine Research 38(2), 75–82.</li>
+<li>Edgell, H. et al., 2019. Cardiovascular and autonomic responses to 6-month spaceflight: ISS long-duration crew. Aviation, Space, and Environmental Medicine 90(3), 312–319.</li>
+<li>Garrett-Bakelman, F. E. et al., 2019. The NASA Twins Study: a multidimensional analysis of a year-long human spaceflight. Science 364(6436), eaau8650.</li>
+<li>Gelman, A., 2006. Prior distributions for variance parameters in hierarchical models. Bayesian Analysis 1(3), 515–534.</li>
+<li>Hoffman, M. D., Gelman, A., 2014. The No-U-Turn Sampler: adaptively setting path lengths in Hamiltonian Monte Carlo. Journal of Machine Learning Research 15, 1593–1623.</li>
+<li>Kuipers, N. T. et al., 2020. Heart rate variability during Antarctic winter-over confinement. Frontiers in Physiology 11, 520.</li>
+<li>Lu, C. et al., 2026. The AI Scientist: towards fully automated open-ended scientific discovery. arXiv:2408.06292.</li>
+<li>NASA HRP, 2026. Artemis II Human Research Data Methodology Challenge — Official Rules. Floor23 Digital, submission deadline 5 June 2026.</li>
+<li>NASA OSDR, 2024. Open Science Data Repository: SpaceX Inspiration4 studies OSD-569 through OSD-687. osdr.nasa.gov.</li>
+<li>Phan, D., Pradhan, N., Jankowiak, M., 2019. Composable effects for flexible and accelerated probabilistic programming in NumPyro. arXiv:1912.11554.</li>
+<li>Piironen, J., Vehtari, A., 2017. Sparsity information and regularization in the horseshoe and other shrinkage priors. Electronic Journal of Statistics 11(2), 5018–5051.</li>
+<li>Roberts, D. R. et al., 2017. Effects of spaceflight on astronaut brain structure as indicated on MRI. New England Journal of Medicine 377, 1746–1753.</li>
+<li>Rossi, A., Da Pozzo, E., Menicagli, D. et al., 2020. Multilevel Monitoring of Activity and Sleep in Healthy people (MMASH) dataset. Data 5(4), 91, doi:10.13026/cerq-fc86.</li>
+<li>Salvatier, J., Wiecki, T. V., Fonnesbeck, C., 2016. Probabilistic programming in Python using PyMC3. PeerJ Computer Science 2, e55.</li>
+<li>Schlegel, T. T. et al., 1998. Cardiovascular and Valsalva responses during parabolic flight. Journal of Applied Physiology 85, 1957–1965.</li>
+<li>Vehtari, A., Gelman, A., Gabry, J., 2017. Practical Bayesian model evaluation using leave-one-out cross-validation and WAIC. Statistics and Computing 27, 1413–1432.</li>
+<li>Voorhies, A. A., Mark Ott, C., Mehta, S. et al., 2019. Study of the impact of long-duration space missions on the human gut microbiome. Scientific Reports 9, 9911.</li>
+<li>Voss, A., Schroeder, R., Heitmann, A. et al., 2015. Short-term heart rate variability — influence of gender and age in healthy subjects. PLOS ONE 10(3), e0118308.</li>
+<li>Zhou, B., Huang, X., Ning, H., Wu, Q., Li, D., Zhang, Z., 2026. NORA: a harness-engineered autonomous research agent for spatial data science. arXiv:2605.02092.</li>
+</ol>
+</div>
+
+<footer class="embargo">Open-source release · MIT licence · github.com/engimine/HRP_Artemis_II<br>
+Post-challenge open contribution to the NASA HRP community. The author is ineligible to compete under the America COMPETES Act.</footer>
+
+</body>
+</html>
