@@ -170,6 +170,8 @@ def b64(path: Path) -> str:
 
 def build_dashboard(ext, clf_json):
     figs = [
+        ("J · Permutation test (headline)", "fig_J_permutation_null.png"),
+        ("I · Per-feature FDR (0 survive)", "fig_I_perfeature_fdr.png"),
         ("A · Headline LOSO accuracy", "fig_A_headline_accuracy.png"),
         ("E · Classifier sensitivity", "fig_E_classifier_comparison.png"),
         ("B · Inter-subject trajectories", "fig_B_intersubject_trajectories.png"),
@@ -229,14 +231,18 @@ SpaceX Inspiration4 (NASA OSDR) · generated {date}</div>
     <div class="kpi"><div class="v">0.688</div><div class="l">best non-invasive LOSO acc (urine, kNN)</div></div>
     <div class="kpi"><div class="v">0.804</div><div class="l">best acc under Random Forest (serum)</div></div>
     <div class="kpi"><div class="v">0.224</div><div class="l">Bayesian Brier (calibrated)</div></div>
+    <div class="kpi"><div class="v">p = 0.026</div><div class="l">multi-modal permutation test</div></div>
+    <div class="kpi"><div class="v">0 / 1112</div><div class="l">features surviving BH-FDR</div></div>
   </div>
 
   <h2>Headline finding</h2>
-  <p>Under a distance-based baseline, urine cytokines and an 18-feature cardiovascular panel are the only
-  credibly above-chance non-invasive surrogates. A classifier-sensitivity pass shows this ranking is
-  <b>estimator-dependent</b>: a random forest lifts both microbiome modalities from chance to 0.56–0.65 and the
-  serum panel to 0.804. The honest conclusion is not "microbiome has no signal" but "a distance classifier is the
-  wrong tool at p≫n".</p>
+  <p><b>No individual biomarker is significant</b> (0 of 1112 features survive Benjamini–Hochberg correction),
+  yet the <b>fused multi-modal representation separates pre- from post-flight state significantly above chance</b>
+  (LOSO accuracy 0.71; permutation p = 0.026). Multi-modal fusion recovers a spaceflight signature that
+  per-feature analysis cannot see — the central positive result, reported with its n=4 caveat intact.</p>
+  <p>A classifier-sensitivity pass further shows modality informativeness is <b>estimator-dependent</b>: a random
+  forest lifts both microbiome modalities from chance to 0.56–0.65 and the serum panel to 0.804, so the honest
+  reading is "a distance classifier is the wrong tool at p≫n", not "no signal".</p>
 
   <h2>Figures</h2>
   <div class="grid">

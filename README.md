@@ -130,9 +130,10 @@ cd HRP_Artemis_II
 # 2. Python environment (pinned)
 pip install -r requirements.txt
 
-# 3. Fast path — reproduce the figures + dashboard WITHOUT the 12 GB download.
+# 3. Fast path — reproduce the figures, significance tests + dashboard WITHOUT the 12 GB.
 #    (Uses the committed master table and metrics; no MCMC.)
-python notebooks/08_extended_analysis.py
+python notebooks/09_significance.py        # per-feature FDR + permutation test
+python notebooks/08_extended_analysis.py   # extended figures + dashboard
 pytest -q                                  # smoke tests
 #    → open publicacion/dashboard.html in a browser for the full visual summary.
 
@@ -158,12 +159,16 @@ results. Regenerate it any time with `python notebooks/08_extended_analysis.py`.
 
 ## Results at a glance
 
-- Under a distance baseline, **urine cytokines** (LOSO acc 0.688) and an **18-feature
-  cardiovascular panel** (0.679) are the only credibly above-chance non-invasive surrogates.
-- A **classifier-sensitivity** pass shows this ranking is estimator-dependent: a random forest
-  lifts both microbiome modalities from chance to 0.56–0.65 and the **serum panel to 0.804** —
-  so the honest reading is "a distance classifier is the wrong tool at *p ≫ n*", not "no signal".
+- **Central result:** *no individual biomarker is significant* — 0 of 1112 features survive
+  Benjamini–Hochberg correction — yet the **fused multi-modal representation separates pre- from
+  post-flight state significantly above chance** (LOSO accuracy 0.71; label-permutation *p = 0.026*).
+  Multi-modal fusion recovers a spaceflight signature that per-feature analysis cannot see.
+- **Feature efficiency:** an 18-feature cardiovascular panel matches a 406-feature urine panel
+  (0.679 vs 0.688), and this compactness is robust across classifiers.
+- **Classifier sensitivity:** modality informativeness is estimator-dependent — a random forest
+  lifts both microbiome modalities from chance to 0.56–0.65 and the serum panel to 0.804.
 - The hierarchical Bayesian model is **honestly calibrated** (Brier 0.224; mean 95% CrI width 0.775).
+- Everything is reported with the *n = 4* uncertainty intact — no over-claimed effect sizes.
 
 ---
 

@@ -1,0 +1,17 @@
+{
+  "per_feature_fdr": {
+    "n_features_tested": 1058,
+    "n_uncorrected_p05": 77,
+    "n_significant_bh_fdr": 0,
+    "fdr_q": 0.05,
+    "expected_false_positives_at_p05": 52.9
+  },
+  "permutation_null": {
+    "pca_components": 10,
+    "observed_loso_acc": 0.7083,
+    "null_mean": 0.4894,
+    "null_std": 0.1069,
+    "n_permutations": 2000,
+    "empirical_p": 0.0255
+  }
+}
