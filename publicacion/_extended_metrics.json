@@ -1,0 +1,72 @@
+{
+  "generated": "2026-07-02",
+  "classifier_summary": {
+    "most_informative_knn": "Urine cytokine (Alamar)",
+    "most_informative_rf": "Serum cytokine (Alamar)",
+    "rf_gain_taxonomy": null
+  },
+  "pca": {
+    "pc1_var": 0.16406237719813602,
+    "pc2_var": 0.14329107784963477,
+    "n_features_used": 1052
+  },
+  "missingness_by_modality": {
+    "alamar (n=406)": 0.042,
+    "urine (n=403)": 0.086,
+    "immune_eve (n=142)": 0.0,
+    "cbc (n=60)": 0.012,
+    "cmp (n=55)": 0.018,
+    "tax (n=28)": 0.0,
+    "cardio (n=18)": 0.0
+  },
+  "top_movers_preview": [
+    [
+      "alamar__il4_percent_normalized_value",
+      -1.4416269382905396
+    ],
+    [
+      "alamar__il16_percent_normalized_value",
+      -1.3422177639891413
+    ],
+    [
+      "alamar__ctss_percent_normalized_value",
+      -1.2635142133871473
+    ],
+    [
+      "alamar__mmp9_percent_normalized_value",
+      -1.2343296696490957
+    ],
+    [
+      "alamar__cst7_percent_normalized_value",
+      -1.2301883103676725
+    ],
+    [
+      "alamar__s100a12_concentration_npq",
+      -1.1904625060876584
+    ],
+    [
+      "alamar__s100a12_percent_normalized_value",
+      -1.1898599299721644
+    ],
+    [
+      "alamar__s100a9_percent_normalized_value",
+      -1.167393059437723
+    ],
+    [
+      "alamar__il17b_percent_normalized_value",
+      -1.1576375344653533
+    ],
+    [
+      "cbc__mcv_value_femtoliter",
+      -1.1267110560667857
+    ],
+    [
+      "alamar__gdf15_percent_normalized_value",
+      -1.1102950695852858
+    ],
+    [
+      "urine__mpo_percent_normalized_value",
+      1.1035056214303784
+    ]
+  ]
+}

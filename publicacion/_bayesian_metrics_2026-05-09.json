@@ -1,0 +1,53 @@
+{
+  "cardio_eve_bayesian_hierarchical": {
+    "n_folds": 4,
+    "accuracy_mean": 0.6428571428571428,
+    "accuracy_std": 0.07142857142857145,
+    "brier_mean": 0.22389162139940694,
+    "mean_p_correct": 0.5545171610085861,
+    "mean_ci_width": 0.7746162748937069,
+    "n_features": 18,
+    "n_samples": 28,
+    "model": "hierarchical_logistic_horseshoe",
+    "fold_details": [
+      {
+        "held_subject": "C001",
+        "n_test": 7,
+        "acc": 0.7142857142857143,
+        "brier": 0.19886320574799318,
+        "mean_p_correct": 0.5822406989559258,
+        "mean_ci_width": 0.8236782023930881
+      },
+      {
+        "held_subject": "C002",
+        "n_test": 7,
+        "acc": 0.5714285714285714,
+        "brier": 0.23427128668242939,
+        "mean_p_correct": 0.5281598525964258,
+        "mean_ci_width": 0.6690143877977022
+      },
+      {
+        "held_subject": "C003",
+        "n_test": 7,
+        "acc": 0.5714285714285714,
+        "brier": 0.25467632120511696,
+        "mean_p_correct": 0.5431803619238286,
+        "mean_ci_width": 0.8302756170168273
+      },
+      {
+        "held_subject": "C004",
+        "n_test": 7,
+        "acc": 0.7142857142857143,
+        "brier": 0.20775567196208827,
+        "mean_p_correct": 0.5644877305581638,
+        "mean_ci_width": 0.7754968923672096
+      }
+    ]
+  },
+  "cardio_eve_group_posterior": {
+    "mu_alpha_mean": -0.2669450381791909,
+    "mu_alpha_sd": 0.4663797932351597,
+    "sigma_alpha_mean": 0.48763300594806386,
+    "lam_mean": 0.49159335991341807
+  }
+}

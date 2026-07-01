@@ -1,0 +1,35 @@
+{
+  "n_obs": 24,
+  "n_features_used": 1110,
+  "n_latent_dims": 2,
+  "in_sample_accuracy": 0.5416666666666666,
+  "alpha_posterior_mean": 0.015990470630592182,
+  "gamma_posterior_mean": [
+    0.14398334549580924,
+    -0.0008569838740637506
+  ],
+  "sigma_x_posterior_mean": 0.8245728553073794,
+  "subjects": [
+    "C001",
+    "C002",
+    "C003",
+    "C004"
+  ],
+  "timepoints": [
+    "L-92",
+    "L-44",
+    "L-3",
+    "R+1",
+    "R+45",
+    "R+82"
+  ],
+  "modalities_in_master": [
+    "alamar",
+    "cmp",
+    "cardio",
+    "immune_eve",
+    "urine",
+    "cbc",
+    "tax"
+  ]
+}

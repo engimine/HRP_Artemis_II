@@ -1,0 +1,24 @@
+# HRP Artemis II — pinned environment (verified from the author's working machine, 2026-07-02)
+# These are the exact versions under which the released results reproduce.
+# Regenerate after any upgrade with:  pip freeze > requirements.txt
+python_requires = ">=3.11"
+
+# --- core scientific stack ---
+numpy==2.2.6
+scipy==1.16.2
+pandas==2.3.3
+scikit-learn==1.7.2
+matplotlib==3.10.6
+
+# --- bayesian / probabilistic ---
+pymc==5.28.5
+numpyro==0.21.0
+jax==0.10.0
+arviz==0.23.4
+
+# --- io / utils ---
+requests>=2.32
+tqdm>=4.66
+
+# --- testing ---
+pytest>=8.0

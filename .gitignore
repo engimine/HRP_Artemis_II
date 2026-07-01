@@ -1,0 +1,71 @@
+# Datasets — 12+ GB de NASA OSDR, NUNCA al repo
+dataset/nasa_osdr_inspiration4/
+dataset/physionet_mmash/
+dataset/physionet_wearable_exam_stress/
+dataset/nhanes_2021-2023/
+dataset/_v3_stdout.log
+dataset/_inventory_samples.csv
+dataset/osd572_isa/
+
+# Pero sí guardar los scripts e índice
+!dataset/_INDEX.md
+!dataset/_download_osdr_inspiration4.py
+!dataset/_download_osdr_inspiration4_v2.py
+!dataset/_osd630_files.json
+
+# Backups locales y check-files
+publicacion/_visual_check_*/
+publicacion/_demo_plot_*.png
+publicacion/_demo_report_screenshot*.png
+publicacion/paper/*_v2_p*.png
+publicacion/paper/*_p*.png
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Notebooks/IDE
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Internal communication drafts (not for repo)
+publicacion/EMAIL_FLOOR23_BORRADOR.md
+publicacion/_LINKEDIN_POST_DRAFT_*.md
+
+# Internal session notes & strategy (not for public repo)
+_NEXT_SESSION.md
+_BRIEF.md
+_PLANB_PREPRINTS_ORG.md
+dataset/_INDEX.md
+dataset/_INVENTORY.md
+
+# Visual-check render artifacts
+publicacion/paper/arxiv_nora_v1/_visual_check/
+
+# arXiv submission package (build artifact, regenerable)
+publicacion/paper/arxiv_nora_v1/arxiv_submission/
+publicacion/paper/arxiv_nora_v1/arxiv_submission.tar.gz
+
+# Superseded earlier paper versions (kept locally, not published)
+publicacion/paper/artemis_ii_methodology_en.html
+publicacion/paper/artemis_ii_methodology_en.pdf
+publicacion/paper/artemis_ii_divulgativo_es.html
+publicacion/paper/artemis_ii_divulgativo_es.pdf
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.out
+*.spl
+paper.log
+_pg*.png
